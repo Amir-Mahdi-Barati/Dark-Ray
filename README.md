@@ -79,6 +79,9 @@ Before compiling the sketch, install the following libraries using the Arduino L
 - 🛠 **Version:** v1.0 Pro  
 - 🗓 **Release Date:** 2025-06-05  
 - 🏁 **Made in:** Iran 🇮🇷
+<p align="center">
+  <img src="0.jpg" width ="700" alt="DarkRay RGB Controller Preview">
+</p>
 
 ---
 
