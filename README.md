@@ -2,8 +2,10 @@
  🌈 DarkRay RGB Controller
 
 An Arduino-powered RGB LED strip controller with **NeoPixel** support and an interactive **OLED display menu**, designed for smooth control using push buttons and a rotary encoder.
+<p align="center">
+  <img src="1.jpg" width ="700" alt="DarkRay RGB Controller Preview">
+</p>
 
----
 
 ## 📦 Project Overview
 
@@ -40,8 +42,10 @@ Before compiling the sketch, install the following libraries using the Arduino L
 > ⚠️ **Power Note:**  
 > - Use a **separate 5V / 2A+ power supply** for the LED strip.  
 > - Ensure **all GND connections are common** across power and data systems.
+<p align="center">
+  <img src="2.png" width ="700" alt="DarkRay RGB Controller Preview">
+</p>
 
----
 
 ## ✨ Features
 
