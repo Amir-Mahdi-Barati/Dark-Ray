@@ -52,8 +52,10 @@ const int BRIGHTNESS_MAX = 255;
 int speed = 50;
 int brightness = 128;
 
-int settingsIndex = 0;       // شاخص گزینه در منوی تنظیمات (0=سرعت،1=روشنایی)
-const int settingsMenuLength = 2;  // تعداد گزینه‌های تنظیمات
+// selected index in settings menu (0: speed config, 1: brightness)
+int settingsIndex = 0;
+// setting menu's options count
+const int settingsMenuLength = 2;
 
 void setup() {
   pinMode(BTN_UP, INPUT_PULLUP);
@@ -152,11 +154,11 @@ void handleInput() {
     inSubMenu = false;
     lastPress = millis();
   }
-  // ---------- Rotary Encoder Logic ----------
+// ---------- rotary encoder ----------
 int newClkState = digitalRead(ENCODER_CLK);
 if (newClkState != lastClkState) {
   if (digitalRead(ENCODER_DT) != newClkState) {
-    // چرخش به راست
+    // turning right
     if (inSubMenu) {
       if (currentMenu == 2) {
         if (settingsIndex == 0)
@@ -173,7 +175,7 @@ if (newClkState != lastClkState) {
       menuIndex = (menuIndex + 1) % mainMenuLength;
     }
   } else {
-    // چرخش به چپ
+    // turning left
     if (inSubMenu) {
       if (currentMenu == 2) {
         if (settingsIndex == 0)
@@ -191,10 +193,11 @@ if (newClkState != lastClkState) {
     }
   }
   lastClkState = newClkState;
-  lastPress = millis(); // ضد نویز
+  // prevent noises
+  lastPress = millis();
 }
 
-// ---------- Rotary Button ----------
+// ---------- rotary btn ----------
 if (!digitalRead(ENCODER_SW)) {
   if (!encoderButtonPressed && millis() - lastPress > debounce) {
     if (!inSubMenu) {
@@ -315,7 +318,7 @@ void runSelectedEffect() {
     case 6: fireEffect(); break;
     case 7: iceEffect(); break;
 
-    // افکت های جدید (غیر فعال به صورت ساده و بدون تغییر)
+    // new effects (disabled by default)
     case 8: rainbowFade(15); break;
     case 9: rainbowFade(5); break;
     case 10: rainbowFade(40); break;
@@ -335,18 +338,20 @@ void runSelectedEffect() {
 }
 
 void simpleEffect(int effectNumber) {
-  // فقط یک حالت چشمک زن ساده برای افکت های جدید
+  // blinking mode for the new effects
   static bool on = false;
   on = !on;
   if (on) {
-    setColor(strip.Color(255, 255, 255)); // سفید روشن
+    // white (ON)
+    setColor(strip.Color(255, 255, 255));
   } else {
-    setColor(0); // خاموش
+    // OFF
+    setColor(0);
   }
   delay(speed);
 }
 
-// افکت های اصلی شما (مانند کد اصلی)
+// main effects
 
 void rainbowCycle() {
   static uint16_t j = 0;
@@ -457,7 +462,8 @@ void rainbowSparkle(int wait) {
   static unsigned long lastSparkle = 0;
   static int pos = 0;
   if (millis() - lastSparkle > wait) {
-    strip.setPixelColor(pos, 0); // پاک کردن قبل
+    // clear the previous
+    strip.setPixelColor(pos, 0);
     pos = random(NUMPIXELS);
     strip.setPixelColor(pos, Wheel(random(255)));
     strip.show();
@@ -475,7 +481,7 @@ void sparkleRandomRainbow(int wait) {
   delay(wait);
 }
 
-// لارسون ریدر رنگین‌کمانی (نور به جلو و عقب حرکت می‌کنه)
+// the rainbow larson rider effect (the light moves backwards and forwards)
 void rainbowKnightRider(int wait) {
   static int pos = 0;
   static int dir = 1;
@@ -488,7 +494,7 @@ void rainbowKnightRider(int wait) {
   delay(wait);
 }
 
-// بونس رنگین‌کمانی (نور پرش به جلو و عقب با رنگین‌کمان)
+// rainbow bounce effect
 void rainbowBounce(int wait) {
   static int pos = 0;
   static int dir = 1;
@@ -505,7 +511,7 @@ void rainbowBounce(int wait) {
 
 
 
-// --------- توابع کمکی ---------
+// --------- auxiliary functions ---------
 
 uint32_t dimColor(uint32_t color, uint8_t brightness) {
   return strip.Color((uint8_t)((color >> 16 & 0xFF) * brightness / 255),
